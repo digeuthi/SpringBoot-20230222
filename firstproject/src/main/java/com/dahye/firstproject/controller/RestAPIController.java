@@ -1,15 +1,39 @@
 package com.dahye.firstproject.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
+class ParamDto {
+    private String data1;
+    private String data2;
+
+    public String getData1(){
+        return this.data1;
+    }
+
+    public String getData2(){
+        return this.data2;
+    }
+
+    public void setData1(String data1){
+        this.data1 = data1;
+    }
+
+    public void setData2(String data2){
+        this.data2 = data2;
+    }
+}
 
 //@Controller //ViewResolver? / html을 반환해줌
 @RestController //Rest API를 위한 Controller임을 명시해주는 어노테이션
@@ -63,7 +87,7 @@ public class RestAPIController {
         return "Response of Delete Request";
     }
 
-    //PathVariable()로 Get, Delete Method에서 데이터 받기
+    //*PathVariable()로 Get, Delete Method에서 데이터 받기
     // 리소스에 지정한 패턴에 따라 맞춰서 요청의 url을 지정한다면
     // 패턴에 맞춰 데이터를 받아오는 형식
     @GetMapping({"path-variable/{data1}","path-variable/{data1}/{data2}"}) //{}안의 값은 내가 입력하는것
@@ -79,4 +103,33 @@ public class RestAPIController {
     //안의 들어가는 코드가 완전히 똑같다면 @GetMapping자리에 받을수 있는 밸류를 문자열의 배열로 들어가서 2개이상 들어갈수 있다.
     //{"path-variable/{data1}/{data2}","path-variable/{data1}" 둘중하나를 만족하면 반환되도록해주는것
     // 예외처리를 안해줘서 500오류가 뜨게된다 required = false추가하면 null값으로 들어가서 반환되게 된다
+
+    //*@RequestParam 로 GET과 DELETE Method에서 데이터 받기
+    // 완전한 path 뒤에 ?name=value[&...] 형식에 맞춰 name에 해당하는 value를 받아오는 형식
+    // '?'뒤로는 데이터의 포맷으로 인식을 한다, path가 아니다! data의 형식을 보면 키와 밸류의 형태 하나의 묶음으로 넘어온것 = 오브젝트, 객체!
+    // 객체로도 받을수 있다는 말이 된다.
+    @GetMapping("request-param")
+    public String requestParam(
+        @RequestParam String data1, //data이름을 바꾸게되면 url지정 이름도 바꿔줘야한다
+        @RequestParam String data2
+        //ParamDto dto //이렇게 객체로도 받을수 있다...?
+        ){
+        return data1 + data2 + " 데이터를 입력받았습니다.";
+        // return dto.getData1() + dto.getData2() 식으로 객체를 받아올수있는데
+        // get의 경우 url에 데이터가 노출이 될수 있으므로 필수적인 정보를 담기에는 보안상 위험하다
+    } 
+    
+    //아까PathVariable는 500대의 오류, 지금은  400대의 오류가 된다고..? 이건 데이터에 대한 문제니까?
+
+    //* @RequsetBody로 Post, Put, Patch Method에서 데이터 받기
+    // Request Body에 있는 데이터를 받기 위한 어노테이션
+    @PostMapping("request-body")
+    public /*String*/ResponseEntity<ParamDto> requestBody(
+        //@RequestBody String data //문자로 받을때
+        @RequestBody ParamDto dto //객체로 받을때 (지금 이거 맨위에 클래스 해결 안됨) 
+            //dto로 받을때는 필수로 지정되어있지 않기때문에 null로 받을수는 있다
+            // 필수로 받고자 할때는 validate이용해서 사용할수 있게된다.
+    ){ 
+        return ResponseEntity.status(408).body(dto);//.getData1() + dto.getData2() + "데이터를 받았습니다";
+    }
 }
