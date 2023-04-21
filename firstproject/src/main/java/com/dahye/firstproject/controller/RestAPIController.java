@@ -140,7 +140,7 @@ public class RestAPIController {
     }
 
     @PostMapping("lombok")
-    public ResponseEntity<ExampleResponseDto> lombok(
+    public ResponseEntity<ExampleResponseDto> lombok( //왜 dto관련해서 request랑 response를 한공간에서 하는거지
         @Valid
         @RequestBody exampleDto requestBody
         ){
