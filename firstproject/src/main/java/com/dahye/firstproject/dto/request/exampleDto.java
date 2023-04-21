@@ -1,15 +1,21 @@
 package com.dahye.firstproject.dto.request;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-@Setter
-@Getter //안의 내용도 꺼내야하기때문에 getter사용함
-@ToString //리퀘스트 잘못들어온걸 디버깅할때 필요하다
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
+@Data
 public class exampleDto {
-    
+
+    @NotNull
     private String parameter1;
+    @Length(min = 0, max = 20) //data2의 길이를 20이상으로 지정하게 되면 400의 오류가 뜨게된다
     private String parameter2;
     private String parameter3;
 

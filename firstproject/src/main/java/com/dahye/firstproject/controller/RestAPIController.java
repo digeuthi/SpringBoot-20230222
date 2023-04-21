@@ -1,5 +1,7 @@
 package com.dahye.firstproject.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dahye.firstproject.dto.request.exampleDto;
+import com.dahye.firstproject.dto.response.ExampleResponseDto;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -137,8 +140,24 @@ public class RestAPIController {
     }
 
     @PostMapping("lombok")
-    public String lombok(@RequestBody exampleDto requestBody){
-        return requestBody.toString();
+    public ResponseEntity<ExampleResponseDto> lombok(
+        @Valid
+        @RequestBody exampleDto requestBody
+        ){
+            String data1 = requestBody.getParameter1();
+            String data2 = requestBody.getParameter2();
+            String data3 = requestBody.getParameter3();
+
+            // ExampleResponseDto reponseData = new ExampleResponseDto(data1,data2,data3);
+
+            ExampleResponseDto reponseData = 
+            ExampleResponseDto.builder().data1(data1).build(); //builder는 스태틱메서드. 인스턴스를 생성하는것?
+            //data1에 data1의 값을 넣어서 인스턴스를 만들어주는것. 빌더는 직접 자리를 지정해서 넣어줄수 있게한다 
+            //선생님은 생성자로 그냥 만들어서 사용한다.
+
+            System.out.println(reponseData.toString());
+
+            return ResponseEntity.status(200).body(reponseData);
         
     }
 }
