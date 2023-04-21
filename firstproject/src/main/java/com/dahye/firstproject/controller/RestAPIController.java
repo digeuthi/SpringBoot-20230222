@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.dahye.firstproject.dto.request.exampleDto;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 class ParamDto {
@@ -98,7 +101,7 @@ public class RestAPIController {
         return dataA + dataB + " 데이터를 입력받았습니다.";
     }
 
-    //데이터를 2개를 입력하는 코드를 만들고 나서 하나반 입력시 오류가 뜨게 된다 아마 오류 400대로 뜨는듯
+    //데이터를 2개를 입력하는 코드를 만들고 나서 하나만 입력시 오류가 뜨게 된다 아마 오류 400대로 뜨는듯
     //이때 해결은 데이터 하나만 받아서 만드는 걸 따로 만들어서 처리를 해줄수도 있고
     //안의 들어가는 코드가 완전히 똑같다면 @GetMapping자리에 받을수 있는 밸류를 문자열의 배열로 들어가서 2개이상 들어갈수 있다.
     //{"path-variable/{data1}/{data2}","path-variable/{data1}" 둘중하나를 만족하면 반환되도록해주는것
@@ -131,5 +134,11 @@ public class RestAPIController {
             // 필수로 받고자 할때는 validate이용해서 사용할수 있게된다.
     ){ 
         return ResponseEntity.status(408).body(dto);//.getData1() + dto.getData2() + "데이터를 받았습니다";
+    }
+
+    @PostMapping("lombok")
+    public String lombok(@RequestBody exampleDto requestBody){
+        return requestBody.toString();
+        
     }
 }
