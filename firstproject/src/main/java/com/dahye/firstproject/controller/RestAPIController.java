@@ -123,7 +123,7 @@ public class RestAPIController {
         return data1 + data2 + " 데이터를 입력받았습니다.";
         // return dto.getData1() + dto.getData2() 식으로 객체를 받아올수있는데
         // get의 경우 url에 데이터가 노출이 될수 있으므로 필수적인 정보를 담기에는 보안상 위험하다
-    } 
+    }  
     
     //아까PathVariable는 500대의 오류, 지금은  400대의 오류가 된다고..? 이건 데이터에 대한 문제니까?
 
@@ -132,7 +132,7 @@ public class RestAPIController {
     @PostMapping("request-body")
     public /*String*/ResponseEntity<ParamDto> requestBody(
         //@RequestBody String data //문자로 받을때
-        @RequestBody ParamDto dto //객체로 받을때 (지금 이거 맨위에 클래스 해결 안됨) 
+        @RequestBody ParamDto dto //객체로 받을때
             //dto로 받을때는 필수로 지정되어있지 않기때문에 null로 받을수는 있다
             // 필수로 받고자 할때는 validate이용해서 사용할수 있게된다.
     ){ 
