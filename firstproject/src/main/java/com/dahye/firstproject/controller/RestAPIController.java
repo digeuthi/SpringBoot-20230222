@@ -2,6 +2,7 @@ package com.dahye.firstproject.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dahye.firstproject.dto.request.exampleDto;
 import com.dahye.firstproject.dto.response.ExampleResponseDto;
+import com.dahye.firstproject.service.RestAPIService;
+import com.dahye.firstproject.service.implement.RestApiServiceImplement;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,6 +52,18 @@ class ParamDto {
                 // URL path 패턴을 지정해서 해당 패턴이면 지정한 클래스로 처리하도록 함              
                 //value만 지정할거면 api만 적어도 된다
 public class RestAPIController {
+
+    // private RestApiServiceImplement restApiService =
+    //     new RestApiServiceImplement(); //의존성을 컨트롤러에 직접 만들어 사용, RestAPIController이 종속되어 버린다. 
+    //의존성이 이렇게 직접 만들어져있으면 하나의 서비스만 잘못되도 다른 서비스들 다 사용이 불가하다 Ioc 주입해서 사용하기
+    //@Autowired
+    private RestAPIService  restApiService; //이렇게 만들면 무조건 Autowired붙여야함 , 안적으면 적용안된다.
+
+    public RestAPIController(RestAPIService restApiService){ //RestAPIService을 참조하게함, RestApiServiceImplements 가 아니고
+        this.restApiService = restApiService; //Autowired 지우고 생성자에 주입하는 방법, Autowired가 필수로 적어야할 필요가없다
+        //의존성 주입해준다. // 내용물이 만들어지지 않으면 우리가 쓸수 없다. 문제가 발생하면 실행이 안되게된다.
+        //그래서 참조파일을 인터페이스로 적용시킨다. implement가 아니고 (의존성 역전의 원칙 적용)
+    }
     
     @RequestMapping(method = {RequestMethod.GET}, value = "hello2") //가독성떨어짐 -> 하나하나 기능별로 분해해서 사용하게된다 Request Method
     //패스가 hello2인 것을 메서드를 겟할수있다..?
@@ -65,7 +80,8 @@ public class RestAPIController {
     @GetMapping("get-method") //패스를 지정해준것 (path value), 프로그래밍 언어에서는 띄어쓰기할때 언더바 하거나 각각 카멜케이스쓰는데
                               //url표시할때는 -으로 표시하게 된다
     public String getMethod(){
-        return "Response of Get Request";
+        return  restApiService.getMethod(); //"Response of Get Request";
+       
     }
 
     //POST Method @PostMapping
@@ -74,7 +90,9 @@ public class RestAPIController {
     @PostMapping("post-method") //리소스는 있는데 POST로만 인식되게 해둠. 다른 걸 사용하면 405에러가 뜬다
         //리소스는 찾았는데 대응하는 메서드를 찾지못했다고 뜨게된다.
     public String postMethod(){
-        return "Response of Post Request";
+        return restApiService.postMethod(); //"Response of Post Request";
+        //구현이 되지 않았더라도 실행이 가능하다. 인터페이스를 통해 구현해둬서 의존성이 낮게 된다.
+        
     }
 
     //Patch Method @PatchMaping
@@ -82,7 +100,8 @@ public class RestAPIController {
     // @RequestMapping(mehod=RequestMethod.PATCH, value="patch-mdthod")과 동일.
     @PatchMapping("patch-method")
     public String patchMethod(){
-        return "Response of Patch Requset";
+        return restApiService.patchMethod(); //"Response of Patch Requset";
+        
     }
 
     //Delete Method @DeleteMapping
@@ -90,7 +109,8 @@ public class RestAPIController {
     // @RequestMapping(mehod=RequestMethod.DELETE, value="delete-mdthod")과 동일.
     @DeleteMapping("delete-method")
     public String deleteMethod(){
-        return "Response of Delete Request";
+        return restApiService.deleteMethod(); //"Response of Delete Request";
+        
     }
 
     //*PathVariable()로 Get, Delete Method에서 데이터 받기
