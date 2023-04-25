@@ -30,7 +30,7 @@ public class ExampleEntity {
     //다른 제약조건을 설정하려면 @Column사용해서 지정함
     @Column(name="example_column1", nullable = false, unique = true) //column 사용하지 않으면 명명규칙 엄격하게 따라야한다.
     //클래스도 어노테이션 지정하지 않고 할 경우 명명규칙 정확히 따라야한다
-    private int pk; 
+    private int pk; //멤버변수의 이름도 column명을 따라가줘야 헷갈리지 않는다
     private String exampleColumn2;
     private boolean exampleColumn3;
 }

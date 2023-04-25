@@ -37,14 +37,39 @@ public class RestApiServiceImplement implements RestAPIService { //구현체
     public String getMethod(){
         //데이터 조회
         // 1. jpaRepository에 있는 findBy 메서드로 Entity 조회
-        ExampleEntity exampleEntity = exampleRepository.findById(1).get();
-        return exampleEntity.toString(); //반환을 String으로 설정해뒀으니까
+        //ExampleEntity exampleEntity = exampleRepository.findById(1).get();
+
+        ExampleEntity exampleEntity = exampleRepository.findByPk(1);
+
+        exampleRepository.
+
+        return exampleEntity == null ? "null" : exampleEntity.toString(); //반환을 String으로 설정해뒀으니까
+        //null인 경우를 예외처리 해줌
     }
 
     public String patchMethod(){
+        //데이터 수정
+        //patch (구분자와 변경할 값만 있으면 된다)
+        // 1-1. 특정 조건으로 Entity 조회 
+        ExampleEntity exampleEntity = exampleRepository.findById(1).get();
+        // 1-2. 데이터 수정작업
+        exampleEntity.setExampleColumn2("string2");
+        // 1-3. Entity 인스턴스 저장
+        exampleRepository.save(exampleEntity);
+
+        //put (필수값은 전부 필요하다)
+        // 2-1. Entity 인스턴스 생성
+        ExampleEntity exampleEntity2 = new ExampleEntity(2, "string3",true); //입력받은 전체를 가져와 save
+        //존재하는 테이블에 pk가 존재한다면 원래 있던 것을 변경시킨다
+        // 2-2 Entity 인스턴스 저장
+        exampleRepository.save(exampleEntity2);
         return null;
     }
     public String deleteMethod(){
+        //데이터 삭제
+        // 1-1. jpaRepository애 있는 deleteBy메서드로 Entity 삭제
+        exampleRepository.deleteById(1);
+        //exampleRepository.delete(null); //특정 레코드 자체를넣어도 지울수 있다.
         return null;
     }
 }
