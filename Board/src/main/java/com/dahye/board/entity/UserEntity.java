@@ -4,6 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.tomcat.jni.User;
+
+import com.dahye.board.dto.request.user.PostUserRequestDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +24,16 @@ public class UserEntity {
     private String nickname;
     private String phoneNumber;
     private String address;
-    private String consentPersonalInformation;
+    private boolean consentPersonalInformation;
     private String profileImageUrl;
+
+    public UserEntity(PostUserRequestDto dto){
+        this.email = dto.getUserEmail();
+        this.password = dto.getUserPassword();
+        this.nickname = dto.getUserNickname();
+        this.phoneNumber = dto.getUserPhoneNumber();
+        this.address = dto.getUserAddress();
+        this.consentPersonalInformation = true;
+        this.profileImageUrl = dto.getUserProfileImageUrl();
+    }
 }

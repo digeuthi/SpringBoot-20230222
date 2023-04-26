@@ -21,6 +21,6 @@ public class PostUserRequestDto {
     @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$") //전화번호에 대한 패턴 커스텀 작업
     private String userPhoneNumber;
     @NotBlank
-    private String userAdderss;
+    private String userAddress;
     private String userProfileImageUrl;
 }
