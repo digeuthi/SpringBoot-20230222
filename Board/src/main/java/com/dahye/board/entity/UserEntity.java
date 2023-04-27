@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.apache.tomcat.jni.User;
-
 import com.dahye.board.dto.request.user.PostUserRequestDto;
 
 import lombok.AllArgsConstructor;

@@ -69,7 +69,7 @@ public class UserServiceImplement implements UserService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
 
-        // 성공 반환 //todo에 해야할일 작성한 후 하나하나 작성하는게 덜 힘들다
+        // 성공 반환 //to_do에 해야할일 작성한 후 하나하나 작성하는게 덜 힘들다
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
 
 
