@@ -1,11 +1,16 @@
 package com.dahye.board.entity;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.dahye.board.dto.request.board.PostBoardRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,5 +32,19 @@ public class BoardEntity {
     private String boardImageUrl;
     private String writeDateTime;
     private int viewCount;
+
+    public BoardEntity(PostBoardRequestDto dto){ //생성자 만들기
+
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String writeDatetime = simpleDateFormat.format(now);
+
+        this.writerEmail = dto.getBoardWriterEmail();
+        this.title= dto.getBoardTitle();
+        this.content = dto.getBoardContent();
+        this.boardImageUrl = dto.getBoardImageUrl();
+        this.writeDateTime = writeDatetime; //생성자가 돌아가는 시점으로 
+        this.viewCount = 0; //만들어지면 초기값이 무조건 0
+    }
 
 }
