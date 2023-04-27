@@ -41,7 +41,7 @@ public class RestApiServiceImplement implements RestAPIService { //구현체
 
         ExampleEntity exampleEntity = exampleRepository.findByPk(1);
 
-        exampleRepository.
+        // exampleRepository.
 
         return exampleEntity == null ? "null" : exampleEntity.toString(); //반환을 String으로 설정해뒀으니까
         //null인 경우를 예외처리 해줌
