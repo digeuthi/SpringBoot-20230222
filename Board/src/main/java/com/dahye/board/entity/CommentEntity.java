@@ -26,5 +26,8 @@ public class CommentEntity {
     private int boardNumber;
     private String commentContent;
     private String wirteDateTime;
+
+    private String userNickname;
+    private String userProfileImageUrl;
     
 }

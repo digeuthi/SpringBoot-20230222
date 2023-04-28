@@ -81,19 +81,17 @@ public class BoardServiceImplement implements BoardService {
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
         
         GetBoardResponseDto body = null;
-        ResponseDto errorBody = null;
+        //ResponseDto errorBody = null;
 
         try{
 
             if (boardNumber == null) { //board의 타입은 int, Repository의 타입은 Integer이라 null은 처리를 못해주므로 검증처리
-                
                 return CustomResponse.validationFaild();
             }
 
             //게시물 번호 조회
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null) { //존재하지 않는 게시물 번호 조회시
-                
                 return CustomResponse.notExistBoardNumber();
             }
 
@@ -103,6 +101,8 @@ public class BoardServiceImplement implements BoardService {
 
             List<CommentEntity> commentEntities = commentRepository.findByBoardNumber(boardNumber);
             List<LikyEntity> likyEntities = likyRepository.findByBoardNumber(boardNumber);
+
+            body = new GetBoardResponseDto(boardEntity, userEntity, commentEntities, likyEntities); 
 
         } catch(Exception exception) {
             exception.printStackTrace();

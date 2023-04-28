@@ -23,5 +23,7 @@ public class LikyEntity { //복합 프라이머리 키
     private int boardNumber;
     @Id
     private String userEmail;
+    private String userNickname;
+    private String userProfileImageUrl;
     
 }
