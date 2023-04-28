@@ -43,7 +43,7 @@ public class BoardController {
     // 2. 특정 게시물 조회
     @GetMapping("/{boardNumber}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
-        @PathVariable("boadrNumber") Integer boardNumber  //Integer로 한 이유가 있나?
+        @PathVariable("boardNumber") Integer boardNumber  //Integer로 한 이유가 있나?
     ){
         ResponseEntity<? super GetBoardResponseDto> response =
             boardService.getBoard(boardNumber);

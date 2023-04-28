@@ -49,7 +49,7 @@ public class GetBoardResponseDto extends ResponseDto {
                 this.boardTitle = boardEntity.getTitle();
                 this.boardContent = boardEntity.getContent();
                 this.boardImageUrl = boardEntity.getBoardImageUrl();
-                this.boardWriteDatetime = boardEntity.getWriteDateTime();
+                this.boardWriteDatetime = boardEntity.getWriteDatetime();
                 this.viewCount = boardEntity.getViewCount();
                 this.boardWriterEmail = userEntity.getEmail();
                 this.boardWirterNickname = userEntity.getNickname();
@@ -79,7 +79,7 @@ class Comment {
         this.commentContent = commentEntity.getCommentContent();
         this.commentWriterNickname = commentEntity.getUserNickname();
         this.commentWirterProfileImageUrl = commentEntity.getUserProfileImageUrl();
-        this.commentWriteDatetime = commentEntity.getWirteDateTime();
+        this.commentWriteDatetime = commentEntity.getWriteDatetime();
     }
 
     static List<Comment> createList(List<CommentEntity> commentEntities) { //필요한 값들만 넣기 위해서 복사하는 행위..

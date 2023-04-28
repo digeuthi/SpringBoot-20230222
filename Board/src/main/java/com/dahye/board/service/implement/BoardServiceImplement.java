@@ -94,6 +94,10 @@ public class BoardServiceImplement implements BoardService {
             if (boardEntity == null) { //존재하지 않는 게시물 번호 조회시
                 return CustomResponse.notExistBoardNumber();
             }
+            //조회시 조회수 증가하는 기능 추가
+            int viewCount = boardEntity.getViewCount();
+            boardEntity.setViewCount(++viewCount);
+            boardRepository.save(boardEntity);
 
             //User가져와서 boardWriter관련된 값 가져오기
             String boardWriterEmail = boardEntity.getWriterEmail();
@@ -126,8 +130,38 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'patchBoard'");
+        
+        int boardNumber = dto.getBoardNumber();
+        String userEmail = dto.getUserEmail(); //검증시 필요한 데이터들 가져옴
+        String boardTitle = dto.getBoardTitle();
+        String boardContent = dto.getBoardContent();
+        String boardImageUrl = dto.getBoardImageUrl();
+
+        try{
+            // 존재하지 않는 게시물 번호 반환
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            // 존재하지 않는 유저 이메일 반환
+            boolean existedUserEmail = userRepository.existsByEmail(userEmail);
+            if(!existedUserEmail) return CustomResponse.notExistUserEmail();
+
+            // 권한없음 //가져온 이메일과 writeremail이 같은지 비교해주면된다
+            boolean equalWriter = boardEntity.getWriterEmail().equals(userEmail);
+            if(!equalWriter) return CustomResponse.noPermissions();
+
+            boardEntity.setTitle(boardTitle);
+            boardEntity.setContent(boardContent);
+            boardEntity.setBoardImageUrl(boardImageUrl); //보드 엔터티에 옮겨서 해주는게 깔끔하다..
+
+            boardRepository.save(boardEntity);
+
+        } catch(Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
 
     @Override

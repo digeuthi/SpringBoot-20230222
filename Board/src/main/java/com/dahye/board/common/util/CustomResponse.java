@@ -6,6 +6,11 @@ import org.springframework.http.ResponseEntity;
 import com.dahye.board.dto.response.ResponseDto;
 
 public class CustomResponse {
+
+    public static ResponseEntity<ResponseDto> success(){
+        ResponseDto body = new ResponseDto("SU", "SUCESS");
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
     
     public static ResponseEntity<ResponseDto> databaseError(){
         ResponseDto errorBody = new ResponseDto("DE", "Database Error");
@@ -24,4 +29,15 @@ public class CustomResponse {
         ResponseDto errorBody  = new ResponseDto("NB", "Non-Existent Board Number");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
+
+    public static ResponseEntity<ResponseDto> notExistUserEmail(){ //인증할수없다
+        ResponseDto errorBody  = new ResponseDto("NU", "Non-Existent User Email");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> noPermissions(){ //인가할수없다
+        ResponseDto errorBody  = new ResponseDto("NP", "No Permissions");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
+    }
+
 }

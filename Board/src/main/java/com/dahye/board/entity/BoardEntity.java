@@ -30,7 +30,7 @@ public class BoardEntity {
     private String title;
     private String content;
     private String boardImageUrl;
-    private String writeDateTime;
+    private String writeDatetime;
     private int viewCount;
 
     public BoardEntity(PostBoardRequestDto dto){ //생성자 만들기
@@ -43,7 +43,7 @@ public class BoardEntity {
         this.title= dto.getBoardTitle();
         this.content = dto.getBoardContent();
         this.boardImageUrl = dto.getBoardImageUrl();
-        this.writeDateTime = writeDatetime; //생성자가 돌아가는 시점으로 
+        this.writeDatetime = writeDatetime; //생성자가 돌아가는 시점으로 
         this.viewCount = 0; //만들어지면 초기값이 무조건 0
     }
 
