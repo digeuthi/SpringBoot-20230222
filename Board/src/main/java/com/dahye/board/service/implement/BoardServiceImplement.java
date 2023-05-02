@@ -166,8 +166,34 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<ResponseDto> deleteBoard(String userEmail, Integer boardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteBoard'");
+        
+        //ResponseDto body = null;
+
+        try {
+
+            if(boardNumber == null) return CustomResponse.validationFaild(); //Integer타입과 int타입의 차이점 때문에 null처리
+            // 존재하지 않는 게시물 번호 반환
+            BoardEntity boardEntity  = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return CustomResponse.notExistBoardNumber();
+
+            // 존재하지 않는 유저 이메일 반환
+            boolean existedUserEmail = userRepository.existsByEmail(userEmail);
+            if(!existedUserEmail) return CustomResponse.notExistUserEmail();
+
+            // 권한 없음 반환 우리가 받은 유저이메일이 게시글의 작성자인지 비교하는것
+            boolean equalWriter = boardEntity.getWriterEmail().equals(userEmail);
+            if(!equalWriter) return CustomResponse.noPermissions();
+            
+            commentRepository.deleteByBoardNumber(boardNumber); //참조하는 댓글과 좋아요값을 지움
+            likyRepository.deleteByBoardNumber(boardNumber);
+            boardRepository.delete(boardEntity); //오류 다 확인했을시 지워버리는것
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
     
 }
