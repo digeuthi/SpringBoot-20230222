@@ -34,7 +34,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
         "AND B.board_number = L.board_number "+
         "AND B.writer_email = U.email "+
         "GROUP BY B.board_number "+
-        "ORDER BY B.write_datetime DESC",
+        "ORDER BY boardWriteDateTime DESC",
         nativeQuery = true
         )
     public List<BoardListResultSet> getList(); //제너릭 바꿔줌.
@@ -48,10 +48,10 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
         "B.board_image_url AS boardImageUrl," +
         "B.write_datetime AS boardWriteDateTime," +
         "B.view_count AS ViewCount," +
-        " U.email AS boardWriterNickname," +
+        "U.email AS boardWriterNickname," +
         "U.profile_image_url AS boardWriterProfileImageUrl,"+
         "count(distinct C.comment_number) AS commentCount,"+
-        "count(distinct L.user_email) AS likeCount" +
+        "count(distinct L.user_email) AS likeCount " +
         "FROM Board B, Comment C, Liky L, User U " +
         "WHERE B.board_number = C.board_number "+
         "AND B.board_number = L.board_number "+

@@ -16,7 +16,7 @@ import lombok.Setter;
 
 @Data
 @NoArgsConstructor
-//@AllArgsConstructor
+//@AllArgsConstructor 생성자 만들어줄때 List 관련해서 값이 2개가 되므로 지운건가
 public class GetBoardListResponseDto extends ResponseDto{
     private List<BoardSummary> boardList;
 
@@ -26,7 +26,8 @@ public class GetBoardListResponseDto extends ResponseDto{
         List<BoardSummary> boardList = new ArrayList<>();
 
         for(BoardListResultSet result : resultSet){
-
+            BoardSummary boardSummary = new BoardSummary(result);
+            
         }
 
         this.boardList = boardList;
@@ -50,4 +51,18 @@ class BoardSummary {
     private String boardWriterProfieImageUrl;
     private int CommenCount;
     private int likeCount; 
+
+    public BoardSummary(BoardListResultSet resultSet){
+        this.boardNumber = resultSet.getBoardNumber();
+        this.boardTitle = resultSet.getBoardTitle();
+        this.boardContent = resultSet.getBoardContent();
+        this.boardImageUrl = resultSet.getBoardImageUrl();
+        this.boardWriteDatetime = resultSet.getBoardWirteDateTime();
+        this.viewCount = resultSet.getViewCount();
+        this.boardWriterEmail = resultSet.getBoardWirterEmail();
+        this.boardWirterNickname = resultSet.getBoardWirterNickname();
+        this.boardWriterProfieImageUrl = resultSet.getBoardWriterProfileImageUrl();
+        this.CommenCount = resultSet.getCommentCount();
+        this.likeCount = resultSet.getLikeCount();
+    }
 }
