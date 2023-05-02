@@ -17,6 +17,7 @@ import com.dahye.board.entity.BoardEntity;
 import com.dahye.board.entity.CommentEntity;
 import com.dahye.board.entity.LikyEntity;
 import com.dahye.board.entity.UserEntity;
+import com.dahye.board.entity.resultSet.BoardListResultSet;
 import com.dahye.board.repository.BoardRepository;
 import com.dahye.board.repository.CommentRepository;
 import com.dahye.board.repository.LikyRepository;
@@ -118,14 +119,29 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super GetBoardListResponseDto> getBoardList() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBoardList'");
+        GetBoardListResponseDto body = null;
+        try {
+
+            List<BoardListResultSet> resultSet = boardRepository.getList();
+            body = new GetBoardListResponseDto(resultSet);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
     public ResponseEntity<? super GetBoardListResponseDto> getBoardTop3() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBoardTop3'");
+        GetBoardListResponseDto body = null;
+        try {
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Override
