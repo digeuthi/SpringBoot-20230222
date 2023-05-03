@@ -27,4 +27,10 @@ public class MainServeceImplement implements MainService {
         String jwt = jwtTokenProvider.create(data);
         return jwt;
     }
+
+    @Override
+    public String validJwt(String jwt) { //검증
+        String subject = jwtTokenProvider.validate(jwt);
+        return subject;
+    }
 }
