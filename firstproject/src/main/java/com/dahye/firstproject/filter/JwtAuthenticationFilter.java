@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,7 +32,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-       
+       try {
+
+        String jwt =parseToken(request);
+
+        boolean hasJwt = jwt != null;
+        if(!hasJwt) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String subject = jwtTokenProvider.validate(jwt); //subject 꺼내올수있다.
+
+        AbstractAuthenticationToken authenticationToken = 
+            new UsernamePasswordAuthenticationToken(subject, null, AuthorityUtils.NO_AUTHORITIES);
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(authenticationToken);
+
+        SecurityContextHolder.setContext(securityContext);
+
+       } catch (Exception exception) {
+            exception.printStackTrace();
+       }
+
+       filterChain.doFilter(request, response); //이렇게 해야 다음 필터로 넘어갈수 있다. 필터 벗어나기
     }
 
     //파싱 진행
@@ -37,7 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         boolean hasToken = 
                 token != null && 
-                token.equalsIgnoreCase("null");
+                !token.equalsIgnoreCase("null");
         if(!hasToken) return null;
 
         //"Bearer eyJhbGci..." 인지 확인하는 것

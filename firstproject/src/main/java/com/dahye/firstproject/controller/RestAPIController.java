@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,8 +80,12 @@ public class RestAPIController {
     // @RequestMapping(mehod=RequestMethod.GET, value="get-mdthod")과 동일.
     @GetMapping("get-method") //패스를 지정해준것 (path value), 프로그래밍 언어에서는 띄어쓰기할때 언더바 하거나 각각 카멜케이스쓰는데
                               //url표시할때는 -으로 표시하게 된다
-    public String getMethod(){
-        return  restApiService.getMethod(); //"Response of Get Request";
+    public String getMethod(
+        @AuthenticationPrincipal String subject
+
+    ){
+        //return  restApiService.getMethod(); //"Response of Get Request";
+        return subject;
        
     }
 
