@@ -17,7 +17,7 @@ import com.dahye.board.provider.JwtProvider;
 import com.dahye.board.repository.UserRepository;
 import com.dahye.board.service.AuthService;
 
-@Service //이게 없으면 실행 오류가 뜰수있다.
+@Service //입력하지 않으면 인식하지 못해서 오류가 발생할 수 있다.
 public class AuthServiceImplement implements AuthService {
     
     //사용할 레포 올려두기
