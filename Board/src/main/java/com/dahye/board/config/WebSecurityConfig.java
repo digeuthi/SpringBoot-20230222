@@ -3,6 +3,7 @@ package com.dahye.board.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,7 +32,8 @@ public class WebSecurityConfig {
                     .csrf().disable()
                     .httpBasic().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                    .authorizeHttpRequests().antMatchers("/","/**").permitAll()
+                    .authorizeHttpRequests().antMatchers("/api/v1/**","/api/v2/auth/**","/api/v2/board/list","/api/v2/board/top3").permitAll()
+                    .antMatchers(HttpMethod.GET,"/api/v2/board/*").permitAll()
                     .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

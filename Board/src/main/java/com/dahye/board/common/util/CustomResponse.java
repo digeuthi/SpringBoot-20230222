@@ -50,6 +50,12 @@ public class CustomResponse {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
 
+    public static ResponseEntity<ResponseDto> signInFailed(){  //이거 순서 어디..?
+        ResponseDto errorBody  = new ResponseDto("SF", "Sign In failed");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+
     public static ResponseEntity<ResponseDto> noPermissions(){ //인가할수없다
         ResponseDto errorBody  = new ResponseDto("NP", "No Permissions");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
