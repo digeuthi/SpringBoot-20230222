@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.dahye.board.common.util.CustomResponse;
 import com.dahye.board.dto.request.board.PatchBoardRequestDto;
 import com.dahye.board.dto.request.board.PostBoardRequestDto;
+import com.dahye.board.dto.request.board2.PostBoardRequestDto2;
 import com.dahye.board.dto.response.ResponseDto;
 import com.dahye.board.dto.response.board.GetBoardListResponseDto;
 import com.dahye.board.dto.response.board.GetBoardResponseDto;
@@ -46,16 +47,23 @@ public class BoardServiceImplement implements BoardService {
         //아니면 선언때 final 걸어주고 Required..하는거 public위에 어노테이션 추가하면 생성자 만드는것과 같은 효과를 얻을수 있다.
 
     @Override
-    public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) {
+    public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) { //postBoard
+       
+
+        String boardWriterEmail = dto.getBoardWriterEmail(); //이메일 가져오는것
+       
+        //성공반환
+        return ;
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> postBoard(String userEmail, PostBoardRequestDto2 dto) {
        
         ResponseDto body = null;
 
-        String boardWriterEmail = dto.getBoardWriterEmail(); //이메일 가져오는것
-        //유저 레포지토리에서 유저의 유무 검색해야한다.
-
         try{
             //존재하지 '않는' 유저 오류 반환
-            boolean existedUserEmail = userRepository.existsByEmail(boardWriterEmail);
+            boolean existedUserEmail = userRepository.existsByEmail(userEmail);
             if(!existedUserEmail){ //존재하지 않을때니까 !붙이기
                 ResponseDto errorbody = new ResponseDto("NU","Non-Existent User Email");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorbody);
@@ -63,7 +71,7 @@ public class BoardServiceImplement implements BoardService {
 
             //검증끝났으니까 삽입작업하기
 
-            BoardEntity boardEntity = new BoardEntity(dto);
+            BoardEntity boardEntity = new BoardEntity(userEmail, dto);
             boardRepository.save(boardEntity);
 
             body = new ResponseDto("SU","Success");

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.dahye.board.dto.request.board.PostBoardRequestDto;
+import com.dahye.board.dto.request.board2.PostBoardRequestDto2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,6 +41,20 @@ public class BoardEntity {
         String writeDatetime = simpleDateFormat.format(now);
 
         this.writerEmail = dto.getBoardWriterEmail();
+        this.title= dto.getBoardTitle();
+        this.content = dto.getBoardContent();
+        this.boardImageUrl = dto.getBoardImageUrl();
+        this.writeDatetime = writeDatetime; //생성자가 돌아가는 시점으로 
+        this.viewCount = 0; //만들어지면 초기값이 무조건 0
+    }
+
+    public BoardEntity(String userEmail,PostBoardRequestDto2 dto){ //생성자 만들기
+
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String writeDatetime = simpleDateFormat.format(now);
+
+        this.writerEmail = userEmail;
         this.title= dto.getBoardTitle();
         this.content = dto.getBoardContent();
         this.boardImageUrl = dto.getBoardImageUrl();
