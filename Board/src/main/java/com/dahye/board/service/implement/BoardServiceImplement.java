@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.dahye.board.common.util.CustomResponse;
 import com.dahye.board.dto.request.board.PatchBoardRequestDto;
 import com.dahye.board.dto.request.board.PostBoardRequestDto;
+import com.dahye.board.dto.request.board2.PatchBoardRequestDto2;
 import com.dahye.board.dto.request.board2.PostBoardRequestDto2;
 import com.dahye.board.dto.response.ResponseDto;
 import com.dahye.board.dto.response.board.GetBoardListResponseDto;
@@ -47,18 +48,22 @@ public class BoardServiceImplement implements BoardService {
         //아니면 선언때 final 걸어주고 Required..하는거 public위에 어노테이션 추가하면 생성자 만드는것과 같은 효과를 얻을수 있다.
 
     @Override
-    public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) { //postBoard
-       
+    public ResponseEntity<ResponseDto> postBoard(PostBoardRequestDto dto) { //postBoard 동일한것 2개가 된다. token 포함해서 진행
+
 
         String boardWriterEmail = dto.getBoardWriterEmail(); //이메일 가져오는것
-       
+        PostBoardRequestDto2 dto2 = new PostBoardRequestDto2(dto);
+
+        ResponseEntity<ResponseDto> response = 
+                    postBoard(boardWriterEmail, dto2);
+
         //성공반환
-        return ;
+        return response;
     }
 
     @Override
     public ResponseEntity<ResponseDto> postBoard(String userEmail, PostBoardRequestDto2 dto) {
-       
+
         ResponseDto body = null;
 
         try{
@@ -159,8 +164,19 @@ public class BoardServiceImplement implements BoardService {
     @Override
     public ResponseEntity<ResponseDto> patchBoard(PatchBoardRequestDto dto) {
         
-        int boardNumber = dto.getBoardNumber();
+        
         String userEmail = dto.getUserEmail(); //검증시 필요한 데이터들 가져옴
+        PatchBoardRequestDto2 dto2 = new PatchBoardRequestDto2(dto);
+
+        ResponseEntity<ResponseDto> response = patchBoard(userEmail, dto2);
+
+        return response;
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> patchBoard(String userEmail, PatchBoardRequestDto2 dto) {
+        
+        int boardNumber = dto.getBoardNumber();
         String boardTitle = dto.getBoardTitle();
         String boardContent = dto.getBoardContent();
         String boardImageUrl = dto.getBoardImageUrl();

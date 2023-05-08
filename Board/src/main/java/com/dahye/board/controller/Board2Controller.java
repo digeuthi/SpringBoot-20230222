@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dahye.board.dto.request.board.PatchBoardRequestDto;
+import com.dahye.board.dto.request.board2.PatchBoardRequestDto2;
 import com.dahye.board.dto.request.board2.PostBoardRequestDto2; //복사한 dto로 바꿔줌
 import com.dahye.board.dto.response.ResponseDto;
 import com.dahye.board.dto.response.board.GetBoardListResponseDto;
@@ -70,19 +71,20 @@ public class Board2Controller {
     }
 
     // 5. 특정 게시물 수정
-    @PatchMapping("") //이거 경로있고 없고의 차이는 뭐지
-    public ResponseEntity<ResponseDto> patchBoard( //매개변수 받고 아니고의 차이는 뭐지
-        @Valid @RequestBody PatchBoardRequestDto requestBody
+    @PatchMapping("") 
+    public ResponseEntity<ResponseDto> patchBoard( 
+        @AuthenticationPrincipal String userEmail,
+        @Valid @RequestBody PatchBoardRequestDto2 requestBody
     ){
         ResponseEntity<ResponseDto> response = 
-            boardService.patchBoard(requestBody);
+            boardService.patchBoard(userEmail,requestBody);
         return response;
     }
 
     // 6. 특정 게시물 삭제
-    @DeleteMapping("/{userEmail}/{boardNumber}")
+    @DeleteMapping("/{boardNumber}")
     public ResponseEntity<ResponseDto> deleteBoard(
-        @PathVariable("userEmail") String userEmail,
+        @AuthenticationPrincipal String userEmail,
         @PathVariable("boardNumber") Integer boardNumber
     ){
         ResponseEntity<ResponseDto> response =
