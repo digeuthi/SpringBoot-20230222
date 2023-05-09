@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.dahye.firstproject.provider.JwtTokenProvider;
+import com.dahye.firstproject.provider.UserRole;
 import com.dahye.firstproject.service.MainService;
 
 @Component //지정해둔 클래스에만 Ioc 시킬수 있고 autowierd로 가져올수 있게 된다 @service 해도 이름을 지정해준거지 컴포넌트의 역할을 한다
@@ -29,8 +30,8 @@ public class MainServeceImplement implements MainService {
     }
 
     @Override
-    public String validJwt(String jwt) { //검증
-        String subject = jwtTokenProvider.validate(jwt);
+    public UserRole validJwt(String jwt) { //검증
+        UserRole subject = jwtTokenProvider.validate(jwt);
         return subject;
     }
 }
